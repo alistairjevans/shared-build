@@ -1,6 +1,9 @@
 Import-Module $PSScriptRoot/build/Autofac.Build.psd1 -Force
 
-$workingDir = Get-Location;
+$workingDir = $env:GITHUB_WORKSPACE;
+
+Write-Message "Running in $workingDir"
+
 $globalJson = (Get-Content "$workingDir/global.json" | ConvertFrom-Json -NoEnumerate);
 
 $sdkVersion = $globalJson.sdk.version
