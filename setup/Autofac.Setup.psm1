@@ -25,62 +25,32 @@ function Get-DotNetProjectDirectory {
 function Install-DotNetCli {
     [CmdletBinding()]
     Param(
+        $InstallDir,
         [string]
         $Version = "Latest"
     )
 
     Write-Message "Installing .NET SDK version $Version"
-
-    $callerPath = Split-Path $MyInvocation.PSCommandPath
-    $installDir = Join-Path -Path $callerPath -ChildPath ".dotnet/cli"
-    if (!(Test-Path $installDir)) {
-        New-Item -ItemType Directory -Path "$installDir" | Out-Null
-    }
-
+    
     # Download the dotnet CLI install script
     if ($IsWindows) {
-        if (!(Test-Path ./.dotnet/dotnet-install.ps1)) {
-            Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile "./.dotnet/dotnet-install.ps1"
+        $scriptFile = Join-Path $env:TEMP 'dotnet-install.ps1';
+
+        if (!(Test-Path $scriptFile)) {
+            Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile $scriptFile
         }
 
-        & ./.dotnet/dotnet-install.ps1 -InstallDir "$installDir" -Version $Version
+        & $scriptFile -InstallDir "$InstallDir" -Version $Version
     } else {
-        if (!(Test-Path ./.dotnet/dotnet-install.sh)) {
-            Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile "./.dotnet/dotnet-install.sh"
+        
+        $scriptFile = Join-Path $env:TEMP 'dotnet-install.sh';
+
+        if (!(Test-Path $scriptFile)) {
+            Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile $scriptFile
         }
 
-        & bash ./.dotnet/dotnet-install.sh --install-dir "$installDir" --version $Version
+        & bash $scriptFile --install-dir "$InstallDir" --version $Version
     }
-
-    Add-Path "$installDir"
-}
-
-<#
-.SYNOPSIS
-    Appends a given value to the path but only if the value does not yet exist within the path.
-.PARAMETER Path
-    The path to append.
-#>
-function Add-Path {
-    [CmdletBinding()]
-    Param(
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Path
-    )
-    
-    $pathSeparator = ":";
-
-    if ($IsWindows) {
-        $pathSeparator = ";";
-    }
-
-    $pathValues = $env:PATH.Split($pathSeparator);
-    if ($pathValues -Contains $Path) {
-      return;
-    }
-
-    $env:PATH = "${Path}${pathSeparator}$env:PATH"
 }
 
 <#
