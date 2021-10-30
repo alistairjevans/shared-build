@@ -16,7 +16,7 @@ runs:
       run: ${{ github.action_path }}/compute-version.ps1
     - name: Print Dotnet Info
       shell: pwsh
-      run: dotnet info
+      run: dotnet --info
     - name: Print Computed Version
       shell: pwsh
       run: echo ${{ steps.compute-version-suffix.outputs.versionSuffix }}
