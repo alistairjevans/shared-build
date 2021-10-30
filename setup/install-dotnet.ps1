@@ -4,10 +4,10 @@ $globalJson = (Get-Content "global.json" | ConvertFrom-Json -NoEnumerate);
 
 $sdkVersion = $globalJson.sdk.version
 
+New-Item -ItemType Directory -Path "./.dotnet" | Out-Null
+
 $fullDotNetPath = Resolve-Path "./.dotnet";
 $cliPath = Join-Path $fullDotNetPath "cli"
-
-New-Item -ItemType Directory -Path $fullDotNetPath | Out-Null
 
 # Install dotnet CLI
 Install-DotNetCli -InstallDir $cliPath -Version $sdkVersion
