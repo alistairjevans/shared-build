@@ -8,12 +8,6 @@ $globalJson = (Get-Content "$workingDir/global.json" | ConvertFrom-Json -NoEnume
 
 $sdkVersion = $globalJson.sdk.version
 
-# Clean up artifacts folder
-if (Test-Path $artifactsPath) {
-    Write-Message "Cleaning $artifactsPath folder"
-    Remove-Item $artifactsPath -Force -Recurse
-}
-
 # Install dotnet CLI
 Write-Message "Installing .NET SDK version $sdkVersion"
 Install-DotNetCli -Version $sdkVersion

@@ -1,9 +1,16 @@
 name: 'Setup'
 description: 'Deploys .NET based on versions in the global.json file'
+outputs:
+  version-suffix: 
+    description: "The version number of the package at this build"
+    value: ${{ steps.compute-version-suffix.outputs.versionSuffix }}
 runs:
   using: "composite"
   steps:
     - name: Install .NET from global.json
       shell: pwsh
-      run: ${{ github.action_path }}/setup.ps1
-        
+      run: ${{ github.action_path }}/install-dotnet.ps1
+    - id: compute-version-suffix
+      name: Compute Version Suffix
+      shell: pwsh
+      run: ${{ github.action_path }}/compute-version.ps1
