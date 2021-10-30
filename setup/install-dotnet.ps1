@@ -9,6 +9,8 @@ New-Item -ItemType Directory -Path "./.dotnet" | Out-Null
 $fullDotNetPath = Resolve-Path "./.dotnet";
 $cliPath = Join-Path $fullDotNetPath "cli"
 
+"Installing to $cliPath"
+
 # Install dotnet CLI
 Install-DotNetCli -InstallDir $cliPath -Version $sdkVersion
 
