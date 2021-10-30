@@ -6,18 +6,17 @@ $sdkVersion = $globalJson.sdk.version
 
 New-Item -ItemType Directory -Path "./.dotnet" | Out-Null
 
-$fullDotNetPath = Resolve-Path "./.dotnet";
-$cliPath = Join-Path $fullDotNetPath "cli"
+$installDir = Resolve-Path "./.dotnet";
 
-"Installing to $cliPath"
+"Installing to $installDir"
 
 # Install dotnet CLI
-Install-DotNetCli -InstallDir $cliPath -Version $sdkVersion
+Install-DotNetCli -InstallDir $installDir -Version $sdkVersion
 
 foreach ($additional in $globalJson.additionalSdks)
 {
-    Install-DotNetCli -InstallDir $cliPath -Version $additional;
+    Install-DotNetCli -InstallDir $installDir -Version $additional;
 }
 
 # Add to system path
-"$cliPath" >> $env:GITHUB_PATH
+"$installDir" >> $env:GITHUB_PATH
