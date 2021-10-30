@@ -1,0 +1,9 @@
+name: 'Setup'
+description: 'Deploys .NET based on versions in the global.json file'
+runs:
+  using: "composite"
+  steps:
+    - name: Install .NET from global.json
+      shell: pwsh
+      run: ${{ github.action_path }}/setup.ps1
+        
