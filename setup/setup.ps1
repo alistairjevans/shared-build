@@ -1,4 +1,4 @@
-Import-Module $PSScriptRoot/build/Autofac.Build.psd1 -Force
+Import-Module $PSScriptRoot/Autofac.Setup.psd1 -Force
 
 $workingDir = $env:GITHUB_WORKSPACE;
 
