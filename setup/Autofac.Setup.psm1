@@ -34,7 +34,7 @@ function Install-DotNetCli {
     
     # Download the dotnet CLI install script
     if ($IsWindows) {
-        $scriptFile = Join-Path $env:TEMP 'dotnet-install.ps1';
+        $scriptFile = Join-Path $env:RUNNER_TEMP 'dotnet-install.ps1';
 
         if (!(Test-Path $scriptFile)) {
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile $scriptFile
@@ -43,7 +43,7 @@ function Install-DotNetCli {
         & $scriptFile -InstallDir "$InstallDir" -Version $Version
     } else {
         
-        $scriptFile = Join-Path $env:TEMP 'dotnet-install.sh';
+        $scriptFile = Join-Path $env:RUNNER_TEMP 'dotnet-install.sh';
 
         if (!(Test-Path $scriptFile)) {
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile $scriptFile
