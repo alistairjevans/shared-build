@@ -1,22 +1,55 @@
 name: 'Setup'
 description: 'Deploys .NET based on versions in the global.json file'
+inputs:
+   version:
+    description: "The main package version"
+    required: true
+   src: 
+    description: "Source folder"
+    required: false
+    default: "./src"
+   test:
+    description: "Tests folder"
+    required: false
+    default: "./test"
+   artifacts: 
+    description: "Artifacts location"
+    required: false
+    default: "./artifacts"
 outputs:
-  version-suffix: 
-    description: "The version number of the package at this build"
-    value: ${{ steps.compute-version-suffix.outputs.versionSuffix }}
+  ctxt:
+    description: "The build context"
+    value: ${{ steps.create-context.outputs.ctxt }}
 runs:
   using: "composite"
   steps:
     - name: Install .NET from global.json
       shell: pwsh
       run: ${{ github.action_path }}/install-dotnet.ps1
+
+      # Sets 'version-suffix' output variable
     - id: compute-version-suffix
       name: Compute Version Suffix
       shell: pwsh
+      
       run: ${{ github.action_path }}/compute-version.ps1
-    - name: Print Dotnet Info
+    - id: create-context
+      name: Create shared context
       shell: pwsh
-      run: dotnet --info
-    - name: Print Computed Version
-      shell: pwsh
-      run: echo ${{ steps.compute-version-suffix.outputs.versionSuffix }}
+      run: |
+
+        $srcFolder = Resolve-Path "${{ inputs.src }}"
+        $testFolder = Resolve-Path "${{ inputs.test }}"
+        $artifactsFolder = Resolve-Path "${{ inputs.artifacts }}"
+
+        $ctxt = @{
+          version="${{ inputs.version }}";
+          versionSuffix="${{ steps.compute-version-suffix.outputs.version-suffix }}";
+          src="$srcFolder";
+          test="$testFolder";
+          artifacts="$artifactsFolder";
+        }
+
+        $json = $ctxt | ConvertTo-Json -Compress
+        
+        Write-Output "::set-output name=ctxt::$json"
