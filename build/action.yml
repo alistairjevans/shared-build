@@ -9,7 +9,6 @@ outputs:
     description: "The build context"
     value: ${{ steps.update-context.outputs.ctxt }}
 runs:
-runs:
   using: "composite"
   steps:
     - name: Restore All
