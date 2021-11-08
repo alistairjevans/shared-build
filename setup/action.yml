@@ -30,9 +30,9 @@ runs:
       # Sets 'version-suffix' output variable
     - id: compute-version-suffix
       name: Compute Version Suffix
-      shell: pwsh
+      shell: pwsh      
+      run: ${{ github.action_path }}/compute-version-suffix.ps1
       
-      run: ${{ github.action_path }}/compute-version.ps1
     - id: create-context
       name: Create shared context
       shell: pwsh
