@@ -17,5 +17,5 @@ runs:
 
     # Build Packages from src directory.
     - name: Build Packages
-      shell: pwdh
+      shell: pwsh
       run: ${{ github.action_path }}/build.ps1 -ctxt $(ConvertFrom-Json '${{ inputs.ctxt }}')
