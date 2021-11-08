@@ -16,10 +16,6 @@ inputs:
     description: "Artifacts location"
     required: false
     default: "./artifacts"
-outputs:
-  ctxt:
-    description: "The build context"
-    value: ${{ steps.create-context.outputs.ctxt }}
 runs:
   using: "composite"
   steps:
@@ -56,4 +52,5 @@ runs:
 
         Write-Output "Saving context:"
         Write-Output $json
-        Write-Output "::set-output name=ctxt::$json"
+
+        "AUTOFAC_CTXT=$json" >> $env:GITHUB_ENV
