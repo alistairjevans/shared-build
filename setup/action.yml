@@ -38,7 +38,7 @@ runs:
       shell: pwsh
       run: |
       
-        Import-Module  ${{ github.action_path }}/Autofac.Build.psd1 -Force
+        Import-Module  ${{ github.action_path }}/Autofac.Setup.psd1 -Force
 
         $srcFolder = Resolve-Path "${{ inputs.src }}"
         $testFolder = Resolve-Path "${{ inputs.test }}"
