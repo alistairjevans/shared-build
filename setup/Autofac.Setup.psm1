@@ -74,7 +74,7 @@ function Write-Message {
 
 <#
 .SYNOPSIS
-    Calls Resolve-Path but works for files that don't exist.
+    Calls Resolve-Path but creates directories that don't exist
 .REMARKS
     From http://devhawk.net/blog/2010/1/22/fixing-powershells-busted-resolve-path-cmdlet
 #>
@@ -86,7 +86,10 @@ function Resolve-Path-Force {
     $FileName = Resolve-Path $FileName -ErrorAction SilentlyContinue `
                                        -ErrorVariable _frperror
     if (-not($FileName)) {
+
         $FileName = $_frperror[0].TargetObject
+
+        New-Item -Path $FileName -ItemType Directory
     }
 
     return $FileName
