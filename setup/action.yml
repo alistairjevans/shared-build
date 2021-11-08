@@ -32,7 +32,7 @@ runs:
       name: Compute Version Suffix
       shell: pwsh      
       run: ${{ github.action_path }}/compute-version-suffix.ps1
-      
+
     - id: create-context
       name: Create shared context
       shell: pwsh
@@ -40,7 +40,7 @@ runs:
 
         $srcFolder = Resolve-Path "${{ inputs.src }}"
         $testFolder = Resolve-Path "${{ inputs.test }}"
-        $artifactsFolder = Resolve-Path "${{ inputs.artifacts }}"
+        $artifactsFolder = Resolve-Path-Force "${{ inputs.artifacts }}"
 
         $ctxt = @{
           version="${{ inputs.version }}";
