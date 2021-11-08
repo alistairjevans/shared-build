@@ -53,5 +53,7 @@ runs:
         }
 
         $json = $ctxt | ConvertTo-Json -Compress
-        
+
+        Write-Output "Saving context:"
+        Write-Output $json
         Write-Output "::set-output name=ctxt::$json"

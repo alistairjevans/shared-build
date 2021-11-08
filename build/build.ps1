@@ -7,4 +7,4 @@ param (
 Import-Module $PSScriptRoot/Autofac.Build.psd1 -Force
 
 # Build, then Pack
-$ctxt
+Write-Output $ctxt
