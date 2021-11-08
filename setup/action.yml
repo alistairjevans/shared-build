@@ -37,10 +37,17 @@ runs:
       name: Create shared context
       shell: pwsh
       run: |
+      
+        Import-Module  ${{ github.action_path }}/Autofac.Build.psd1 -Force
 
         $srcFolder = Resolve-Path "${{ inputs.src }}"
         $testFolder = Resolve-Path "${{ inputs.test }}"
         $artifactsFolder = Resolve-Path-Force "${{ inputs.artifacts }}"
+
+        if (-not(Test-Path $artifactsFolder))
+        {
+          New-Item -Path $artifactsFolder -ItemType Directory
+        }
 
         $ctxt = @{
           version="${{ inputs.version }}";
